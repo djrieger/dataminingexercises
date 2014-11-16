@@ -1,21 +1,15 @@
-myFunction <- function(a) 
-{ return(a) }
-
-myFunction(4)
-
-
-
-
-
-mydata <- read.csv("dmc2010_train.txt",header = TRUE, sep = ";", quote = "\"")
-attribut_names <- names(mydata)
-athist(mydata$attribut_names[1])at
-
-for(i in 1:length(attribut_names)) {
-  x <- attribut_names[i]
-  hist(mydata$x)
+myFunction <- function(data) 
+{ 
+  attribute_names <- names(mydata)
+  for(i in 1:length(attribute_names)) {
+    x <- attribute_names[i]
+    print(x)
+    column <- mydata[,attribute_names[i]]
+    if (is.numeric(column)) {
+      hist(column)
+    }
+  }
 }
 
-?hist
-
-
+mydata <- read.csv("dmc2010_train.txt",header = TRUE, sep = ";", quote = "\"")
+myFunction(mydata)
