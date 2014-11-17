@@ -11,7 +11,7 @@ myFunction <- function(data)
     column <- mydata[[x]]
     
     if (is.numeric(column)) {
-      png(filename=paste("histograms/", x, ".png", sep = ""))
+      png(filename=paste("Histograms/", x, ".png", sep = ""))
       hist(column, main = x)
       dev.off()
       
