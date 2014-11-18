@@ -42,7 +42,7 @@ myFunction <- function(data, class = NULL)
   } else {
     if (class != "customernumber") {
       
-      for(i in 1:4 ){#length(attribute_names)) {
+      for(i in 1:length(attribute_names)) {
         x <- attribute_names[i]
         column <- data[[x]]
         
@@ -50,22 +50,21 @@ myFunction <- function(data, class = NULL)
         
         i <- 0
         if (x != class && x != "customernumber" && is.numeric(column)) {
-          for (uniqueVal in unique(data[[class]])) {
+          uniqueValues <- unique(data[[class]])
+          for (uniqueVal in uniqueValues) {
             #print(uniqueVal)
             part <- subset(data, data[[class]] == uniqueVal)
             
             #histograms <- c(histograms, hist(part[[x]], main = x, plot=  FALSE))
             if (i > 0)
-              hist(part[[x]], main = x, add = T)
+              hist(part[[x]], main = x, add = T, xlab = uniqueVal, breaks = length(unique(column)))
             else
-              hist(part[[x]], main = x)
+              hist(part[[x]], main = x, xlab = uniqueVal, breaks = length(unique(column)))
             i <- i + 1
           }
           
           print(paste(class, x, length(histograms)))
         }
-        
-        
       }
     }
   }
