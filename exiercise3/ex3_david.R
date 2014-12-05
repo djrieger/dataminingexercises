@@ -1,17 +1,20 @@
 a <- function(index, data, kmeans) {
   norm <- 1 / kmeans$size[kmeans$cluster[index]]
   
-  # distance between all points/rows i,j
-  data <- head(data)
+  # for debugging:
+  #print(kmeans$cluster)
+  #data <- head(data)
   #data[1,] <- c(1, 1, 1, 1)
-  #data[2,] <- c(2, 1, 1, -2)
+  #data[2,] <- c(2, 1, 1, 1)
+  
   result = matrix(nrow=nrow(data), ncol=nrow(data))
-  for (i in 1:(nrow(data)-1))
-    for (j in (i+1):nrow(data)) {
-      result[i,j] = sqrt(sum( (data[i,] - data[j,])^2 ))
-    }
-  print(data)
-  print(result)
+  distance <- 0
+  for (i in 1:(nrow(data))) {
+      if (kmeans$cluster[i] == kmeans$cluster[index]) {
+        distance <- distance + sqrt(sum( (data[index,] - data[i,])^2 ))
+      }
+  }
+  return(distance * norm)
 }
 
 
