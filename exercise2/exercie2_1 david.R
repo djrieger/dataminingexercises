@@ -1,7 +1,7 @@
 myFunction <- function(data, class = NULL) 
 { 
+  attribute_names <- names(data)
   if (is.null(class)) {
-    attribute_names <- names(data)
     B = matrix( 
       #c("col1", "col2", "cor"), 
       nrow=1, 
@@ -27,15 +27,6 @@ myFunction <- function(data, class = NULL)
       }
     }
     
-  } else {
-    for (uniqueVal in unique(data[[class]])) {
-      print(uniqueVal)
-      part <- subset(data, data[[class]] == uniqueVal)
-      hist(part[[class]])
-    }
-    
-    return
-    
     # sort B and plot
     B = B[order(as.numeric(B[,3])),]
     for (i in 1:3) {
@@ -47,8 +38,37 @@ myFunction <- function(data, class = NULL)
       print(B[row,])
       plot(data[[B[row,1]]], data[[B[row,2]]], xlab=B[row,1], ylab=B[row,2])
     }
+    
+  } else {
+    if (class != "customernumber") {
+      
+      for(i in 1:length(attribute_names)) {
+        x <- attribute_names[i]
+        column <- data[[x]]
+        
+        histograms <- vector()
+        
+        i <- 0
+        if (x != class && x != "customernumber" && is.numeric(column)) {
+          uniqueValues <- unique(data[[class]])
+          for (uniqueVal in uniqueValues) {
+            #print(uniqueVal)
+            part <- subset(data, data[[class]] == uniqueVal)
+            
+            #histograms <- c(histograms, hist(part[[x]], main = x, plot=  FALSE))
+            if (i > 0)
+              hist(part[[x]], main = x, add = T, xlab = uniqueVal, breaks = length(unique(column)))
+            else
+              hist(part[[x]], main = x, xlab = uniqueVal, breaks = length(unique(column)))
+            i <- i + 1
+          }
+          
+          print(paste(class, x, length(histograms)))
+        }
+      }
+    }
   }
 }
 
 mydata <- read.csv("dmc2010_train.txt",header = TRUE, sep = ";", quote = "\"")
-myFunction(mydata, "model")
+myFunction(mydata, "target90")
